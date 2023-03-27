@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Spreadsheet.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "-e R1C1"
+    }
+  }
+}

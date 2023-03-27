@@ -4,7 +4,7 @@
 public class GridTest
 {
     [Test]
-    public void GridShould()
+    public void GridShouldReturnRightResult()
     {
         // Arrange
         var grid = new Grid();
@@ -106,5 +106,38 @@ public class GridTest
         };
         Assert.That(cellsComputedResults.Count, Is.EqualTo(3));
         Assert.That(cellsComputedResults, Is.EquivalentTo(expectedCellsComputedResults));
+    }
+
+    [Test]
+    public void GridShouldExplainCell()
+    {
+        // Arrange
+        var grid = new Grid();
+
+        var cell1 = new Cell(1, 2);
+        cell1.Code = new List<List<string>>()
+        {
+            new List<string>()
+            {
+                "define",
+                "x",
+                "3"
+            },
+            new List<string>()
+            {
+                "return",
+                "x",
+            }
+        };
+        grid.Cells.Add(cell1);
+
+        // Act
+        //InterpreterEngine.Interpret(cellsComputedResults, cell.Key, cell.Code);
+        cell1.CodeExplained = ExplainerEngine.Explain(cell1.Code);
+
+        // Assert
+        Assert.That(cell1.CodeExplained, Has.Count.EqualTo(2));
+        Assert.That(cell1.CodeExplained[0], Is.EqualTo("define variable x and assign value 3"));
+        Assert.That(cell1.CodeExplained[1], Is.EqualTo("assign cell with value x"));
     }
 }

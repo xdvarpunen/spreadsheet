@@ -8,28 +8,34 @@ public class Grid
     public const int maximumRow = 100;
     public List<Cell> Cells { get; set; } = new();
 
-    public Grid() 
-    { 
-        
-    }
-
-    public void InitializeGrid()
-    {
-        for (int row = minimumRow; row < maximumRow; row++)
-        {
-            for (int column = minimumColumn; column < maximumColumn; column++)
-            {
-                //var cell = new Cell();
-                //cell.Row = row;
-                //cell.Column = column;
-                //// TODO: add Dictionary key
-                //Cells.Add(cell);
-            }
-        }
-    }
-
     public static string ConvertColumnRowToStringRepresentation(int columnIndex, int rowIndex) {
         return "C"+columnIndex+"R"+rowIndex;
+    }
+
+    public Cell? GetCell(int columnIndex, int rowIndex)
+    {
+        return Cells.Find(cell => cell.Column == columnIndex && cell.Row == rowIndex);
+    }
+
+    public Cell? ConvertStringRepresentationToColumnRow(string cell)
+    {
+        var indexOfC = cell.IndexOf("C");
+        var indexOfR = cell.IndexOf("R");
+
+        if (indexOfC != -1 && indexOfR != -1)
+        {
+            var column = cell.Substring(1, indexOfC - 1);
+            var row = cell[(indexOfC + 1)..];
+
+            var isColumnNumeric = int.TryParse(column, out var columnIndex);
+            var isRowNumeric = int.TryParse(row, out var rowIndex);
+            if(isColumnNumeric is true && isRowNumeric is true)
+            {
+                return Cells.Find(cell => cell.Column == columnIndex && cell.Row == rowIndex);
+            }
+        }
+
+        return null;
     }
 
     public static bool IsColumnRowCell(string cell)
@@ -72,10 +78,3 @@ public class Grid
         return cellReferences;
     }
 }
-
-// Grid
-// columns 0-100, rows 0-100
-// Cell CNRN
-// other Cell references
-
-// Toposort

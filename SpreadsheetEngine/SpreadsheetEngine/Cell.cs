@@ -15,4 +15,6 @@ public class Cell
         Row = row;
         Key = "R" + Row + "C" + Column;
     }
+
+    public List<string> CodeExplained { get; set; } = new();
 }

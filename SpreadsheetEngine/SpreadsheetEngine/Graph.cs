@@ -59,11 +59,6 @@
                 }
             }
 
-            //for (int i = 0; i < NumberOfVertices; i++)
-            //{
-            //    Console.WriteLine(stack[i]);
-            //}
-
             return stack.ToArray();
         }
 
