@@ -8,6 +8,7 @@ Minimal spreadsheet app
 - create spreadsheet file
 - print spreadsheet
 - explain cell
+- visualization
 
 #### Feature: Explain Cell
 
@@ -18,6 +19,8 @@ Explain Cell is a feature that shows Cell logic in human readable form. Reading 
 - CLI/GUI interface
 - check if graph is directed acyclic graph and show error
 - file system
+- visualization
+- pipeline to download .exe
 
 ## How spreadsheet calculates cells result
 
