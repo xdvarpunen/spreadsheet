@@ -2,7 +2,7 @@
   "profiles": {
     "Spreadsheet.Console": {
       "commandName": "Project",
-      "commandLineArgs": "-e R1C1"
+      "commandLineArgs": "-r R1C1"
     }
   }
 }

@@ -15,40 +15,57 @@ internal class Program
         Parser.Default.ParseArguments<Options>(args)
                            .WithParsed(o =>
                            {
-                               // TODO START
                                if (o.PrintTable)
                                {
-                                   // TODO: what is the format saved in?
                                    var spreadsheetTable = spreadSheet.SpreadsheetToStringTable();
                                    var table = new ConsoleTable(spreadsheetTable[0].ToArray());
                                    for (int row = 1; row < spreadsheetTable.Count; row++)
                                    {
                                        table.AddRow(spreadsheetTable[row].ToArray());
                                    }
-                                   table.Write(Format.Minimal);
+                                   table.Write();
                                    Console.WriteLine();
-
-                                   //Helper.IsSpreadsheetCreated(fileToProcess);
-                                   //Console.WriteLine($"File processed: {fileToProcess}");
-                                   //Console.WriteLine("Print table...");
-                                   //var table = new ConsoleTable("one", "two", "three");
-                                   //table.Configure(o => o.NumberAlignment = Alignment.Right);
-
-                                   //table.AddRow(1, 2, 3);
-                                   //table.AddRow("this line should be longer", "yes it is", "oh");
-
-                                   ////table.Write();
-                                   ////table.Write(Format.Alternative);
-
-                                   //table.Write(Format.Minimal);
-                                   //Console.WriteLine();
                                }
-                               else if (o.ModifyCell is not null)
+                               else if (o.ReadCellResult is not null)
                                {
-                                   Console.WriteLine("Modify cell...");
-                                   Console.WriteLine(o.ModifyCell);
-                                   // see if cell exist
-                                   // write cell
+                                   Console.WriteLine("Read cell...");
+                                   Console.WriteLine(o.ReadCellResult);
+                                   
+                                   var cell = spreadSheet.Grid.ConvertStringRepresentationToColumnRow(o.ReadCellResult);
+                                   if (cell is not null)
+                                   {
+                                       Console.WriteLine(cell.Result);
+                                   }
+                               }
+                               else if (o.ReadCellCode is not null)
+                               {
+                                   Console.WriteLine("Read cell...");
+                                   Console.WriteLine(o.ReadCellCode);
+
+                                   var cell = spreadSheet.Grid.ConvertStringRepresentationToColumnRow(o.ReadCellCode);
+                                   if (cell is not null)
+                                   {
+                                       Console.WriteLine();
+                                       Console.WriteLine("---");
+                                       foreach (var codeRow in cell.Code)
+                                       {
+                                           Console.WriteLine(string.Join(" ", codeRow));
+                                       }
+                                       Console.WriteLine("---");
+                                       Console.WriteLine();
+                                   }
+                               }
+                               // TODO START
+                               else if (o.WriteCell is not null)
+                               {
+                                   Console.WriteLine("Write cell...");
+                                   Console.WriteLine(o.WriteCell);
+
+                                   var cell = spreadSheet.Grid.ConvertStringRepresentationToColumnRow(o.WriteCell);
+                                   if (cell is not null)
+                                   {
+                                       // Write cell code
+                                   }
                                }
                                // TODO END
                                else if (o.ExplainCell is not null)
@@ -107,12 +124,27 @@ public class Options
 {
     [Option('f', "currentSpreadsheetFilePath", Required = false, HelpText = "Show current spreadsheet file path.")]
     public bool CurrentSpreadsheetFilePath { get; set; }
+
     [Option('c', "createSpreadsheet", Required = false, HelpText = "Create spreadsheet.")]
     public bool CreateSpreadsheet { get; set; }
-    [Option('m', "modifyCell", Required = false, HelpText = "Modify cell.")]
-    public string? ModifyCell { get; set; }
+
+    [Option('a', "readCellResult", Required = false, HelpText = "Read cell result.")]
+    public string? ReadCellResult { get; set; }
+
+    [Option('r', "readCellCode", Required = false, HelpText = "Read cell code.")]
+    public string? ReadCellCode { get; set; }
+
+    [Option('w', "writeCell", Required = false, HelpText = "Write cell.")]
+    public string? WriteCell { get; set; }
+
     [Option('e', "explainCell", Required = false, HelpText = "Explain cell.")]
     public string? ExplainCell { get; set; }
+
     [Option('p', "printTable", Required = false, HelpText = "Print table.")]
     public bool PrintTable { get; set; }
+
+    // TODO: organize to verbs
 }
+
+// -p
+// -e R1C1
